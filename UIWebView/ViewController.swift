@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let url = NSURL(string: "http://www.mstcode.com")
-        webView.loadRequest(NSURLRequest(URL: url!))
+        let url = URL(string: "https://app-eb31e4c92ef6da.spapps.swisscom.com/communities/sf/SwisscomNewsApp/Pages/index.aspx")
+        webView.loadRequest(URLRequest(url: url!))
     }
 
     override func didReceiveMemoryWarning() {
