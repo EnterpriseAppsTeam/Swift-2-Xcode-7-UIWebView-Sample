@@ -7,20 +7,39 @@
 //
 
 import UIKit
+import WebKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, WKNavigationDelegate {
 
-    @IBOutlet weak var webView: UIWebView!
+    var salesfreak = "https://app-eb31e4c92ef6da.spapps.swisscom.com/communities/sf/SwisscomNewsApp/Pages/index.aspx"
+    var qualiportalold = "https://www.qualiportal.ch/"
+    
+    let wv = WKWebView(frame: UIScreen.main.bounds)
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        let url = URL(string: "https://app-eb31e4c92ef6da.spapps.swisscom.com/communities/sf/SwisscomNewsApp/Pages/index.aspx")
-        webView.loadRequest(URLRequest(url: url!))
+        guard let url =  NSURL(string: salesfreak) else { return }
+        wv.navigationDelegate = self
+        wv.load(NSURLRequest(url: url as URL) as URLRequest)
+        view.addSubview(wv)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated  {
+            if let newURL = navigationAction.request.url,
+                let host = newURL.host , !host.hasPrefix(salesfreak) &&
+                UIApplication.shared.canOpenURL(newURL) &&
+                UIApplication.shared.openURL(newURL) {
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        } else {
+            decisionHandler(.allow)
+        }
     }
 
 
