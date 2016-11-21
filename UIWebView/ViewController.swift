@@ -17,6 +17,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     let wv = WKWebView(frame: UIScreen.main.bounds)
     override func viewDidLoad() {
         super.viewDidLoad()
+        wv.scrollView.bounces = false
         guard let url =  NSURL(string: salesfreak) else { return }
         wv.navigationDelegate = self
         wv.load(NSURLRequest(url: url as URL) as URLRequest)
